@@ -90,5 +90,22 @@ exports.update = (req,res) => {
 }
 
 exports.delete = (req,res) => {
-
+    Users.findByIdAndRemove(req.params.usersId)
+    .then(users => {
+        if(!users) {
+            return res.status(404).send({
+                message: "User not found"
+            })
+        }
+        res.send({message: "Users delete"})
+    }).catch(err => {
+        if(err.name === 'NotFound') {
+            return res.status(404).send({
+                message: "Users not found"
+            })
+        }
+        return res.status(500).send({
+            message: "an error occured"
+        })
+    })
 }
