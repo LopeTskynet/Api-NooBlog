@@ -16,6 +16,8 @@ app.get('/', (req,res) => {
     res.json({"Message": "Welcome on the NooBlog API"})
 })
 
+require('./app/routes/users.routes')(app)
+
 //lancement du serveur
 app.listen(config.port, () => {
     console.log("Server on port " + config.port)
