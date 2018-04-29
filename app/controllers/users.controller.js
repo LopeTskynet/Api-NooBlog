@@ -8,6 +8,18 @@ exports.create = (req,res) => {
         })
     }
 
+    if(!req.body.password) {
+        return res.status(400).send({
+            message: "no password given"
+        })
+    }
+    
+    if(!req.body.email) {
+        return res.status(400).send({
+            message: "no email given"
+        })
+    }
+
     const users = new Users({
         pseudo: req.body.title,
         password: req.body.password,
