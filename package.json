@@ -1,0 +1,22 @@
+{
+  "name": "nooblog-api",
+  "version": "1.0.0",
+  "description": "API of the blog NooBlog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LopeTskynet/Api-NooBlog.git"
+  },
+  "author": "Loperiane",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LopeTskynet/Api-NooBlog/issues"
+  },
+  "homepage": "https://github.com/LopeTskynet/Api-NooBlog#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
