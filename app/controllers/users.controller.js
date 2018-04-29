@@ -40,11 +40,30 @@ exports.create = (req,res) => {
 }
 
 exports.findAll = (req,res) => {
-
+    Users.find()
+    .then(users => {
+        res.send(users)
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "an error occured."
+        })
+    })
 }
 
 exports.findOne = (req,res) => {
-
+    Users.findById(req.params.usersId)
+    .then(users => {
+        if(!users){
+            return res.status(404).send({
+                message: "users " + req.params.usersId + " not found"
+            })
+        }
+        res.send(users)
+    }).catch(err => {
+        return res.status(500).send({
+            message: "an error occured"
+        })
+    })
 }
 
 exports.update = (req,res) => {
