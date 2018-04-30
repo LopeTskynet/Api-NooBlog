@@ -1,4 +1,4 @@
-const config = require('./config/server')
+const config = require('./config/server.conf')
 const express = require('express')
 const bodyParser = require('body-parser')
 
@@ -23,7 +23,7 @@ app.listen(config.port, () => {
     console.log("Server on port " + config.port)
 })
 
-const dbConfig = require('./config/database')
+const dbConfig = require('./config/database.conf')
 const mongoose = require('mongoose')
 
 mongoose.Promise = global.Promise
