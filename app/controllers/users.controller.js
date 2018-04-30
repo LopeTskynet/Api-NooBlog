@@ -5,7 +5,7 @@ const crypto = require('./crypto')
 //Methods
 //Create a new user
 exports.create = (req,res) => {
-
+    let hash
     //check if everything is here
     if(!req.body.pseudo) {
         return res.status(400).send({
@@ -24,13 +24,19 @@ exports.create = (req,res) => {
             message: "no email given"
         })
     }
-
-    let pwd = crypto.hashPwd(req.body.password)
+    crypto.genHash(req.body.password)
+    .then(result => {
+        hash = result.hash
+        console.log("k")
+    })
+    .catch(err => {
+        console.log(err)
+    })
 
     //preparing change for the database using the models we import
     const users = new Users({
         pseudo: req.body.title,
-        password: pwd,
+        password: hash,
         role: "guest",
         first_name: req.body.first_name || null,
         last_name: req.body.last_name ||null,

@@ -1,17 +1,17 @@
 const bcrypt = require('bcrypt')
 
-exports.hashPwd = (pwd) => {
-    bcrypt.hash(pwd, 10, function(err, hash){
-    return hash
-})
-}
-
-exports.verifyPwd = (pwd, hash) => {
-    bcrypt.compare(pwd, hash, function(err, res){
-        if(res){
-            return true
-        }else{
-            return false
-        }
-})
+exports.genHash = (password) => {
+    return new Promise((resolve,reject) => {
+        bcrypt.hash(password,10,function(err,hash) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve({
+                    password:password,
+                    hash:hash
+                })
+            }
+        })
+    })
 }
