@@ -4,7 +4,7 @@ const Users = require('../models/users.models')
 //Methods
 //Create a new user
 exports.create = (req,res) => {
-    
+
     //check if everything is here
     if(!req.body.pseudo) {
         return res.status(400).send({
@@ -17,7 +17,7 @@ exports.create = (req,res) => {
             message: "no password given"
         })
     }
-    
+
     if(!req.body.email) {
         return res.status(400).send({
             message: "no email given"

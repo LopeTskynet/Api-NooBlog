@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/LopeTskynet/Api-NooBlog#readme",
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
