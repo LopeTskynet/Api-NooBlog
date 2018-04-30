@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+//Schema of the database
 const UsersSchema = mongoose.Schema({
     pseudo: String,
     password: String,

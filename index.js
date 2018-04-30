@@ -1,6 +1,10 @@
-const config = require('./config/server.conf')
 const express = require('express')
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const Promise = require("bluebird")
+//Config files
+const dbConfig = require('./config/database.conf')
+const config = require('./config/server.conf')
 
 //create express app
 const app = express()
@@ -13,7 +17,7 @@ app.use(bodyParser.json())
 
 //router
 app.get('/', (req,res) => {
-    res.json({"Message": "Welcome on the NooBlog API"})
+  res.json({"Message": "Welcome on the NooBlog API"})
 })
 
 require('./app/routes/users.routes')(app)
@@ -23,10 +27,8 @@ app.listen(config.port, () => {
     console.log("Server on port " + config.port)
 })
 
-const dbConfig = require('./config/database.conf')
-const mongoose = require('mongoose')
-
-mongoose.Promise = global.Promise
+//replace mongoose promise system with bluebird promise
+mongoose.Promise = Promise
 
 mongoose.connect(dbConfig.url)
   .then(() => {

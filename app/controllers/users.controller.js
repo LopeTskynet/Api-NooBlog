@@ -1,7 +1,11 @@
+//models import
 const Users = require('../models/users.models')
 
+//Methods
+//Create a new user
 exports.create = (req,res) => {
     
+    //check if everything is here
     if(!req.body.pseudo) {
         return res.status(400).send({
             message: "no pseudo given"
@@ -20,6 +24,7 @@ exports.create = (req,res) => {
         })
     }
 
+    //preparing change for the database using the models we import
     const users = new Users({
         pseudo: req.body.title,
         password: req.body.password,
@@ -28,17 +33,20 @@ exports.create = (req,res) => {
         last_name: req.body.last_name ||null,
         email: req.body.email
     })
-
+    //doing the modif on the database
     users.save()
     .then(data => {
+        //returning the data we just create
         res.send(data)
     }).catch(err =>{
+        //in case we dont know what happen
         res.status(500).send({
             message: err.message ||"an error occured."
         })
     })
 }
 
+//Find all users
 exports.findAll = (req,res) => {
     Users.find()
     .then(users => {
@@ -50,6 +58,7 @@ exports.findAll = (req,res) => {
     })
 }
 
+//find a specific user
 exports.findOne = (req,res) => {
     Users.findById(req.params.usersId)
     .then(users => {
@@ -66,6 +75,7 @@ exports.findOne = (req,res) => {
     })
 }
 
+//update an user
 exports.update = (req,res) => {
     Users.findByIdAndUpdate(req.params.usersId, {
         pseudo: req.body.title,
@@ -74,7 +84,7 @@ exports.update = (req,res) => {
         first_name: req.body.first_name || null,
         last_name: req.body.last_name ||null,
         email: req.body.email
-    }, {new: true})
+    }, {new: true})//change our data to the updated version of the models
     .then(users => {
         if(!users) {
             return res.status(404).send({
@@ -89,6 +99,7 @@ exports.update = (req,res) => {
     })
 }
 
+//Delete an user
 exports.delete = (req,res) => {
     Users.findByIdAndRemove(req.params.usersId)
     .then(users => {
