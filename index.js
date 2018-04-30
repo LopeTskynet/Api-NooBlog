@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const Promise = require("bluebird")
+const logger = require("./app/logs")
 //Config files
 const dbConfig = require('./config/database.conf')
 const config = require('./config/server.conf')
