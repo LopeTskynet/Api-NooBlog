@@ -1,5 +1,6 @@
 //models import
 const Users = require('../models/users.models')
+const crypto = require('./crypto')
 
 //Methods
 //Create a new user
@@ -24,10 +25,12 @@ exports.create = (req,res) => {
         })
     }
 
+    let pwd = crypto.hashPwd(req.body.password)
+
     //preparing change for the database using the models we import
     const users = new Users({
         pseudo: req.body.title,
-        password: req.body.password,
+        password: pwd,
         role: "guest",
         first_name: req.body.first_name || null,
         last_name: req.body.last_name ||null,
