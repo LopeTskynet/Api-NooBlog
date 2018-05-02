@@ -1,6 +1,7 @@
 //models import
 const Users = require('../models/users.models')
 const crypto = require('./crypto')
+const Promise = require("bluebird")
 
 //Methods
 //Create a new user

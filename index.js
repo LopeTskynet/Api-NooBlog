@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const Promise = require("bluebird")
+mongoose.Promise = Promise
 const logger = require("./app/logs")
 //Config files
 const dbConfig = require('./config/database.conf')
@@ -29,7 +30,6 @@ app.listen(config.port, () => {
 })
 
 //replace mongoose promise system with bluebird promise
-mongoose.Promise = Promise
 
 mongoose.connect(dbConfig.url)
   .then(() => {

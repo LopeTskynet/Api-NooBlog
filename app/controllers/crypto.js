@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const Promise = require("bluebird")
 
 exports.genHash = (password) => {
     return new Promise((resolve,reject) => {
