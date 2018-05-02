@@ -15,3 +15,17 @@ exports.genHash = (password) => {
         })
     })
 }
+
+exports.compareHash = (password, hash) => {
+    return new Promise((resolve,reject) => {
+        bcrypt.compare(password, hash, function(err, res){
+            if(res) {
+                console.log('match')
+                return true
+            } else {
+                console.log('dont match')
+                return false
+            }
+        })
+    })
+}
