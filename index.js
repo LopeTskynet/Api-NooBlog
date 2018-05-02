@@ -1,8 +1,10 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+//replace mongoose promise system with bluebird promise
 const Promise = require("bluebird")
 mongoose.Promise = Promise
+
 const logger = require("./app/logs")
 //Config files
 const dbConfig = require('./config/database.conf')
@@ -24,12 +26,10 @@ app.get('/', (req,res) => {
 
 require('./app/routes/users.routes')(app)
 
-//lancement du serveur
+//launch
 app.listen(config.port, () => {
     console.log("Server on port " + config.port)
 })
-
-//replace mongoose promise system with bluebird promise
 
 mongoose.connect(dbConfig.url)
   .then(() => {
