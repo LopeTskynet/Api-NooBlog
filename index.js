@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const Promise = require("bluebird")
 mongoose.Promise = Promise
 
+var cors = require('cors')
+
 const logger = require("./app/logs")
 //Config files
 const dbConfig = require('./config/database.conf')
@@ -19,6 +21,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 //parse request application/json
 app.use(bodyParser.json())
 
+//use cors for allow access on requests
+app.use(cors())
 //router
 app.get('/', (req,res) => {
   res.json({"Message": "Welcome on the NooBlog API"})
