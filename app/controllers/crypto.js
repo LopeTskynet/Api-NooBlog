@@ -17,6 +17,14 @@ exports.genHash = (password) => {
     })
 }
 
+/**
+ * function compareHash
+ *
+ * @param {String} password password send by IHM
+ * @param {String} hash hash password find in database
+ * @param {boolean} success dont call the method with this params
+ * @return {boolean}
+ */
 exports.compareHash = (password, hash, success) => {
     return new Promise((resolve,reject) => {
         bcrypt.compare(password, hash, function(err, res){

@@ -2,7 +2,6 @@
 const Users = require('../models/users.models')
 const crypto = require('./crypto')
 const Promise = require("bluebird")
-
 //Methods
 //Create a new user
 exports.create = (req,res) => {
@@ -27,15 +26,15 @@ exports.create = (req,res) => {
     crypto.genHash(req.body.password)
     .then(result => {
         var hash = result.hash
-        console.log("k")
         //preparing change for the database using the models we import
         const users = new Users({
-            pseudo: req.body.title,
+            pseudo: req.body.pseudo,
             password: hash,
             role: "guest",
             first_name: req.body.first_name || null,
             last_name: req.body.last_name ||null,
-            email: req.body.email
+            email: req.body.email,
+            token: null
         })
         //doing the modif on the database
         users.save()
@@ -104,6 +103,26 @@ exports.update = (req,res) => {
     })
 }
 
+//check for user connection
+exports.connection = (req,res) => {
+  Users.find({
+    pseudo: req.body.pseudo
+  })
+  .then(response => {
+    //Check if no pseudo matching with pseudo in DB (prevent crash compareHash)
+    if(typeof(response[0]) !== 'undefined'){
+      console.log('this object is undefined')
+      crypto.compareHash(req.body.password, response[0].password, isMatch => {
+        console.log(isMatch)
+      })
+    } else {
+      console.log('bad login or password')
+    }
+  })
+  .catch(err => {
+    console.error(err)
+  })
+}
 //Delete an user
 exports.delete = (req,res) => {
     Users.findByIdAndRemove(req.params.usersId)
