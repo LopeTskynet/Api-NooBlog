@@ -2,6 +2,7 @@
 const Users = require('../models/users.models')
 const crypto = require('./crypto')
 const Promise = require("bluebird")
+const token = require('./connection.token')
 //Methods
 //Create a new user
 exports.create = (req,res) => {
@@ -112,9 +113,19 @@ exports.connection = (req,res) => {
     //Check if no pseudo matching with pseudo in DB (prevent crash compareHash)
     if(typeof(response[0]) !== 'undefined'){
       console.log('this object is undefined')
+
       crypto.compareHash(req.body.password, response[0].password, isMatch => {
-        console.log(isMatch)
+        // if isMatch is true, the pseudo & password are matching with the response
+        token.genToken(response[0]._id)
+        Users.findById(response[0]._id)
+        .then( result => {
+          token.verifyToken(result.token)
+        })
+        .catch( err => {
+          console.error(err)
+        })
       })
+
     } else {
       console.log('bad login or password')
     }

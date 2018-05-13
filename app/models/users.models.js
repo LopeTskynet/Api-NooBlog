@@ -8,7 +8,7 @@ const UsersSchema = mongoose.Schema({
     first_name: String,
     last_name: String,
     email: String,
-    token: String
+    token: Object
 })
 
 module.exports = mongoose.model('Users', UsersSchema)
