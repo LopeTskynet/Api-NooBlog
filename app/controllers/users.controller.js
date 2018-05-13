@@ -119,7 +119,12 @@ exports.connection = (req,res) => {
         token.genToken(response[0]._id)
         Users.findById(response[0]._id)
         .then( result => {
-          token.verifyToken(result.token)
+          if(result.token !== null || result.token === ""){
+            token.verifyToken(result.token)
+          } else {
+            console.log('error : no token found')
+          }
+
         })
         .catch( err => {
           console.error(err)
@@ -134,6 +139,24 @@ exports.connection = (req,res) => {
     console.error(err)
   })
 }
+
+// check the token of user connection, if the token is available the method will return true, if the token is not available the method return false
+exports.tokenVerify = (req,res) => {
+  Users.find({
+    pseudo: req.body.pseudo
+  })
+  .then(response => {
+    if(typeof(response[0]) !== 'undefined'){
+      return token.verifyToken(response[0].token)
+    } else {
+      return false
+    }
+  })
+  .catch( err => {
+    console.error(err)
+  })
+}
+
 //Delete an user
 exports.delete = (req,res) => {
     Users.findByIdAndRemove(req.params.usersId)
