@@ -28,6 +28,7 @@ exports.genToken = ( ( id ) => {
     if(!users)  {
       return res.status(404).send({
           message: "users with id " + req.params.usersId + " not found"
+
       })
     }
   })
@@ -45,11 +46,17 @@ exports.genToken = ( ( id ) => {
  * @param {object} token value of token to verify
  */
 exports.verifyToken  = ( token => {
-  njwt.verify(token, signingKey, (err, verifiedJwt) => {
-    if(err){
-      console.log(err) //Token expired
-    } else {
-      console.log('this token is verified :' +verifiedJwt) // show the token
-    }
+  return new Promise((resolve, reject) => {
+    njwt.verify(token, signingKey, (err, verifiedJwt) => {
+      if(err){
+        console.error('err') //Token expired
+        reject(err)
+      } else {
+        console.log('this token is verified :' +verifiedJwt) // show the token
+        resolve({
+          isTokenVerified : true
+        })
+      }
+    })
   })
 })

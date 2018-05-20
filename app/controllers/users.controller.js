@@ -112,15 +112,16 @@ exports.connection = (req,res) => {
   .then(response => {
     //Check if no pseudo matching with pseudo in DB (prevent crash compareHash)
     if(typeof(response[0]) !== 'undefined'){
-      console.log('this object is undefined')
-
       crypto.compareHash(req.body.password, response[0].password, isMatch => {
         // if isMatch is true, the pseudo & password are matching with the response
         token.genToken(response[0]._id)
         Users.findById(response[0]._id)
         .then( result => {
           if(result.token !== null || result.token === ""){
-            token.verifyToken(result.token)
+           token.verifyToken(result.token)
+           .then(response => {
+             console.log(response)
+           })
           } else {
             console.log('error : no token found')
           }
