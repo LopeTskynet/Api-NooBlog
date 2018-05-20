@@ -148,9 +148,12 @@ exports.tokenVerify = (req,res) => {
   })
   .then(response => {
     if(typeof(response[0]) !== 'undefined'){
-      return token.verifyToken(response[0].token)
+      token.verifyToken(response[0].token)
+      .then(response => {
+        console.log(response)
+      })
     } else {
-      return false
+      console.log('error : no token found')
     }
   })
   .catch( err => {
