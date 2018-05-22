@@ -119,8 +119,13 @@ exports.connection = (req,res) => {
         .then( result => {
           if(result.token !== null || result.token === ""){
            token.verifyToken(result.token)
-           .then(response => {
-             console.log(response)
+           .then(responseToken => {
+             console.log(responseToken.isTokenVerified)
+             if(responseToken.isTokenVerified) {
+               response[0]._id = null
+               res.send(response[0])
+             }
+
            })
           } else {
             console.log('error : no token found')
@@ -144,11 +149,13 @@ exports.connection = (req,res) => {
 // check the token of user connection, if the token is available the method will return true, if the token is not available the method return false
 exports.tokenVerify = (req,res) => {
   Users.find({
-    pseudo: req.body.pseudo
+    pseudo: req.body.pseudo,
+    token: req.body.token
   })
   .then(response => {
     if(typeof(response[0]) !== 'undefined'){
-      token.verifyToken(response[0].token)
+      // token.verifyToken(response[0].token)
+      token.verifyToken(req.body.token)
       .then(response => {
         console.log(response)
       })
