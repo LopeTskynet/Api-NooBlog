@@ -114,31 +114,38 @@ exports.connection = (req,res) => {
     if(typeof(response[0]) !== 'undefined'){
       crypto.compareHash(req.body.password, response[0].password, isMatch => {
         // if isMatch is true, the pseudo & password are matching with the response
-        token.genToken(response[0]._id)
-        Users.findById(response[0]._id)
-        .then( result => {
-          if(result.token !== null || result.token === ""){
-           token.verifyToken(result.token)
-           .then(responseToken => {
-             console.log(responseToken.isTokenVerified)
-             if(responseToken.isTokenVerified) {
-               response[0]._id = null
-               res.send(response[0])
-             }
+        if (isMatch) {
+          token.genToken(response[0]._id)
+          Users.findById(response[0]._id)
+          .then( result => {
+            if(result.token !== null || result.token === ""){
+             token.verifyToken(result.token)
+             .then(responseToken => {
+               console.log(responseToken.isTokenVerified)
+               if(responseToken.isTokenVerified) {
+                 response[0]._id = null
+                 res.send(response[0])
+               }
+             }).catch( err => {
+               console.error(err)
+             })
+            } else {
+              console.log('error : no token found')
+            }
 
-           })
-          } else {
-            console.log('error : no token found')
-          }
+          })
+          .catch( err => {
+            console.error(err)
+          })
+        } else {
+          res.send(false)
+        }
 
-        })
-        .catch( err => {
-          console.error(err)
-        })
       })
 
     } else {
       console.log('bad login or password')
+      res.send(false)
     }
   })
   .catch(err => {
