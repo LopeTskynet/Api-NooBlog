@@ -27,10 +27,12 @@ exports.create = (req, res) => {
       message: "no tag given"
     })
   }
+  let date = new Date().toLocaleDateString()
   const article = new Article({
       article:  req.body.article,
       title: req.body.title,
-      tag: req.body.tag
+      tag: req.body.tag,
+      date: date
   })
   article.save()
   .then(data => {

@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 const ArticleSchema = mongoose.Schema({
     article: String,
     title: String,
-    tag: Array
+    tag: Array,
+    date: Date
 })
 
 module.exports = mongoose.model('Article', ArticleSchema)
