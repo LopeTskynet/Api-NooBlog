@@ -1,6 +1,8 @@
 //models import
 const Article = require('../models/article.models')
+const User = require('./users.controller')
 const Promise = require("bluebird")
+const Token = require('./token.method')
 
 //methods
 /**
@@ -14,6 +16,16 @@ const Promise = require("bluebird")
  */
 exports.create = (req, res) => {
   isFinish = null
+  if(!req.body.pseudo){
+    return res.status(400).send({
+        message: "no pseudo given"
+    })
+  }
+  if(!req.body.token){
+    return res.status(400).send({
+        message: "no token given"
+    })
+  }
   if(!req.body.article){
     return res.status(400).send({
         message: "no article given"
@@ -46,22 +58,28 @@ exports.create = (req, res) => {
       message: "bad state given"
     })
   }
-  let date = new Date().toLocaleDateString()
-  const article = new Article({
-      article:  req.body.article,
-      title: req.body.title,
-      tag: req.body.tag,
-      date: date,
-      isFinish: isFinish
-  })
-  article.save()
-  .then(data => {
-    res.send(data)
-  }).catch(err => {
-    res.status(500).send({
-        message: err.message ||"an error occured."
+  Token.tokenIsGood(req.body.pseudo, req.body.token)
+  .then(testing => {
+    let date = new Date().toLocaleDateString()
+    const article = new Article({
+        article:  req.body.article,
+        title: req.body.title,
+        tag: req.body.tag,
+        date: date,
+        isFinish: isFinish
     })
+    article.save()
+    .then(data => {
+      res.send(data)
+    }).catch(err => {
+      res.status(500).send({
+          message: err.message ||"an error occured."
+      })
+    })
+  }).catch(error => {
+    console.error(error)
   })
+
 }
 
 exports.findAll = (req, res) => {

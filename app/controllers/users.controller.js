@@ -3,6 +3,7 @@ const Users = require('../models/users.models')
 const crypto = require('./crypto')
 const Promise = require("bluebird")
 const token = require('./connection.token')
+const tokenMethod = require('./token.method')
 //Methods
 //Create a new user
 exports.create = (req,res) => {
@@ -122,9 +123,21 @@ exports.connection = (req,res) => {
              token.verifyToken(result.token)
              .then(responseToken => {
                console.log(responseToken.isTokenVerified)
+               console.log('result token :' +result.token)
                if(responseToken.isTokenVerified) {
-                 response[0]._id = null
-                 res.send(response[0])
+                 Users.findByIdAndUpdate(response[0]._id,  {
+                   token: result.token
+                 }, {new: true})
+                 Users.findById(result._id)
+                 .then( data => {
+                   //data._id=null
+                   console.log('data value :' +data)
+                   res.send(data)
+                 })
+                 .catch( err => {
+                   console.error(err)
+                 })
+
                }
              }).catch( err => {
                console.error(err)
@@ -132,7 +145,6 @@ exports.connection = (req,res) => {
             } else {
               console.log('error : no token found')
             }
-
           })
           .catch( err => {
             console.error(err)
@@ -155,24 +167,36 @@ exports.connection = (req,res) => {
 
 // check the token of user connection, if the token is available the method will return true, if the token is not available the method return false
 exports.tokenVerify = (req,res) => {
+  console.log('testing tokenVerify ######################################1111111111#')
+  console.log('req.body.pseudo => '+req.body.pseudo+'\n req.body.token => '+req.body.token)
+  if(!req.body.pseudo){
+    return res.status(400).send({
+        message: "no pseudo given"
+    })
+  }
+  if(!req.body.token){
+    return res.status(400).send({
+        message: "no token given"
+    })
+  }
   Users.find({
     pseudo: req.body.pseudo,
     token: req.body.token
   })
   .then(response => {
-    if(typeof(response[0]) !== 'undefined'){
-      // token.verifyToken(response[0].token)
-      token.verifyToken(req.body.token)
-      .then(response => {
-        console.log(response)
-      })
-    } else {
-      console.log('error : no token found')
-    }
+    tokenMethod.tokenIsGood(req.body.pseudo, req.body.token)
+    .then(data => {
+      res.send(data)
+    })
+    .catch(err => {
+      console.error(err)
+    })
   })
-  .catch( err => {
+  .catch(err => {
     console.error(err)
   })
+  console.log('testing tokenVerify #######################################')
+
 }
 
 //Delete an user

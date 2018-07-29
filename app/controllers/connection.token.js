@@ -49,7 +49,7 @@ exports.verifyToken  = ( token => {
   return new Promise((resolve, reject) => {
     njwt.verify(token, signingKey, (err, verifiedJwt) => {
       if(err){
-        console.error('err') //Token expired
+        console.error('err token expired')
         reject(err)
       } else {
         console.log('this token is verified :' +verifiedJwt) // show the token
