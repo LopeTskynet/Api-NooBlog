@@ -6,9 +6,17 @@ let chaiHttp = require('chai-http')
 let server = require('../index.js')
 let should = chai.should()
 
+let sinon = require('sinon')
+let Token = require('../app/controllers/token.method')
+let stub
 chai.use(chaiHttp)
 
 describe('Article', () => {
+  before(() =>{
+    stub = sinon.stub(Token, 'tokenIsGood').callsFake(() => {
+      return Promise.resolve(true)
+  })
+  })
   beforeEach((done) => {
     Article.remove({}, (err) => {
       done()
@@ -58,7 +66,7 @@ describe('Article', () => {
       let date = new Date().toLocaleDateString()
       let article = {
         pseudo: 'loperiane',
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJub29ibG9nIiwic3ViIjoidGVzdCIsInNjb3BlIjoic2VsZiIsImp0aSI6IjU5MjFkMDA5LWNlYjQtNDhlOC1iMjJhLTk4ZmQ2MjM3MDRmZSIsImlhdCI6MTUzNDM0Mzg0MCwiZXhwIjoxNTM0MzQ3NDQwfQ.ndvYjhtJk5qwPxsiuxH2FaJKnRoX7vmvvTeW5Ny6RsQ',
+        token: 'faketoken',
         article: 'Article test',
         tag: 'OK',
         date: date,
@@ -78,7 +86,7 @@ describe('Article', () => {
       let date = new Date().toLocaleDateString()
       let article = {
         pseudo: 'loperiane',
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJub29ibG9nIiwic3ViIjoidGVzdCIsInNjb3BlIjoic2VsZiIsImp0aSI6IjU5MjFkMDA5LWNlYjQtNDhlOC1iMjJhLTk4ZmQ2MjM3MDRmZSIsImlhdCI6MTUzNDM0Mzg0MCwiZXhwIjoxNTM0MzQ3NDQwfQ.ndvYjhtJk5qwPxsiuxH2FaJKnRoX7vmvvTeW5Ny6RsQ',
+        token: 'faketoken',
         title: 'Article test',
         tag: 'OK',
         date: date,
@@ -98,7 +106,7 @@ describe('Article', () => {
       let date = new Date().toLocaleDateString()
       let article = {
         pseudo: 'loperiane',
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJub29ibG9nIiwic3ViIjoidGVzdCIsInNjb3BlIjoic2VsZiIsImp0aSI6IjU5MjFkMDA5LWNlYjQtNDhlOC1iMjJhLTk4ZmQ2MjM3MDRmZSIsImlhdCI6MTUzNDM0Mzg0MCwiZXhwIjoxNTM0MzQ3NDQwfQ.ndvYjhtJk5qwPxsiuxH2FaJKnRoX7vmvvTeW5Ny6RsQ',
+        token: 'faketoken',
         article: 'Article test',
         title: 'OK',
         date: date,
@@ -118,7 +126,7 @@ describe('Article', () => {
       let date = new Date().toLocaleDateString()
       let article = {
         pseudo: 'loperiane',
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJub29ibG9nIiwic3ViIjoidGVzdCIsInNjb3BlIjoic2VsZiIsImp0aSI6IjU5MjFkMDA5LWNlYjQtNDhlOC1iMjJhLTk4ZmQ2MjM3MDRmZSIsImlhdCI6MTUzNDM0Mzg0MCwiZXhwIjoxNTM0MzQ3NDQwfQ.ndvYjhtJk5qwPxsiuxH2FaJKnRoX7vmvvTeW5Ny6RsQ',
+        token: 'faketoken',
         article: 'Article test',
         title: 'ok',
         tag: 'OK',
@@ -137,7 +145,7 @@ describe('Article', () => {
     it('it should not POST an article without pseudo', (done) => {
       let date = new Date().toLocaleDateString()
       let article = {
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJub29ibG9nIiwic3ViIjoidGVzdCIsInNjb3BlIjoic2VsZiIsImp0aSI6IjU5MjFkMDA5LWNlYjQtNDhlOC1iMjJhLTk4ZmQ2MjM3MDRmZSIsImlhdCI6MTUzNDM0Mzg0MCwiZXhwIjoxNTM0MzQ3NDQwfQ.ndvYjhtJk5qwPxsiuxH2FaJKnRoX7vmvvTeW5Ny6RsQ',
+        token: 'faketoken',
         article: 'Article test',
         title: 'ok',
         tag: 'OK',
@@ -178,10 +186,10 @@ describe('Article', () => {
       let date = new Date().toLocaleDateString()
       let article = {
         pseudo: 'loperiane',
-        token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJub29ibG9nIiwic3ViIjoidGVzdCIsInNjb3BlIjoic2VsZiIsImp0aSI6ImYzYWFjYzZlLWRiMjUtNGJkZi1iNTEwLTliMTQyZDI2MzU5NSIsImlhdCI6MTUzNDM2MDQ3MCwiZXhwIjoxNTM0MzY0MDcwfQ.8c9UKTu0dH-zndKRGi0SqbM9pPtw9lQoS1zFHl6FuzA',
+        token: 'faketoken',
         article: 'Article test',
         title: 'ok',
-        tag: 'OK',
+        tag: 'OKAY',
         date: date,
         isFinish: 'true'
       }
