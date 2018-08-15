@@ -6,8 +6,6 @@ let chaiHttp = require('chai-http')
 let server = require('../index.js')
 let should = chai.should()
 
-const jwt = require('jsonwebtoken')
-
 chai.use(chaiHttp)
 
 describe('Article', () => {
