@@ -43,3 +43,5 @@ mongoose.connect(dbConfig.url)
     console.log("Cannot connect to the database. Exiting now...")
     process.exit()
   })
+
+module.exports = app
