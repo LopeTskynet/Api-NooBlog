@@ -30,6 +30,7 @@ app.get('/', (req,res) => {
 
 require('./app/routes/users.routes')(app)
 require('./app/routes/article.routes')(app)
+require('./app/routes/technicalsheet.routes')(app)
 //launch
 app.listen(config.port, () => {
     console.log("Server on port " + config.port)
