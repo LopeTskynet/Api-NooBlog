@@ -92,3 +92,19 @@ exports.findAll = (req, res) => {
     })
   })
 }
+
+exports.findOne = (req, res) => {
+  Article.findById(req.params.articleId)
+  .then(article => {
+    if(!article){
+      return res.status(404).send({
+        message: "article " + req.params.articleId + " not found"
+      })
+    }
+    res.send(article)
+  }).catch(err => {
+    return res.status(500).send({
+      message: "an error occured"
+    })
+  })
+}
