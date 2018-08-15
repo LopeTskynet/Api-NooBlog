@@ -15,7 +15,7 @@ describe('Article', () => {
     })
   })
 
-  describe('/GET article', () => {
+  describe('GET /article', () => {
     it('it should GET all the articles', (done) => {
       chai.request(server)
         .get('/api/v1/article/all')
@@ -29,7 +29,7 @@ describe('Article', () => {
     })
   })
 
-  describe('/GET/:id article', () => {
+  describe('GET /article/:id', () => {
     it('it should GET a specific article', (done) => {
       let date = new Date().toLocaleDateString()
       let article = new Article({article: "Je suis un article", title: "Attention au poule", tag: "Dylan Bourdere", date: date, isFinish: true })
