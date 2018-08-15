@@ -61,3 +61,16 @@ exports.create = (req, res) => {
     }
   }
 }
+/**
+ * 
+ */
+exports.findAll = (req, res) => {
+  Technicalsheet.find()
+  .then(response => {
+    res.send(response)
+  }).catch(err => {
+    res.status(500).send({
+      message: err.message ||"an error has occured."
+    })
+  })
+}
