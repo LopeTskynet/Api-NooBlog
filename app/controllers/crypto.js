@@ -3,7 +3,7 @@ const Promise = require("bluebird")
 
 /**
  * function genHash : Generate a hash of the password using bcrypt
- * 
+ *
  * @param {String} password
  * @return {String}
  */
@@ -28,7 +28,7 @@ exports.genHash = (password) => {
  *
  * @param {String} password password send by IHM
  * @param {String} hash hash password find in database
- * @param {boolean} success dont call the method with this params
+ * @param {boolean} success give a boolean for the return of this function
  * @return {boolean}
  */
 exports.compareHash = (password, hash, success) => {

@@ -83,26 +83,109 @@ exports.findOne = (req,res) => {
 
 //update an user
 exports.update = (req,res) => {
-    Users.findByIdAndUpdate(req.params.usersId, {
-        pseudo: req.body.title,
-        password: req.body.password,
-        role: "guest",
-        first_name: req.body.first_name || null,
-        last_name: req.body.last_name ||null,
-        email: req.body.email
-    }, {new: true})//change our data to the updated version of the models
-    .then(users => {
-        if(!users) {
-            return res.status(404).send({
-                message: "users with id " + req.params.usersId + " not found"
-            })
-        }
-        res.send(users)
-    }).catch(err => {
-        return res.status(500).send({
-            message: "an error occured"
-        })
+  if(!req.body.pseudo){
+    return res.status(400).send({
+        message: "no pseudo given"
     })
+  }
+  if(!req.body.token){
+    return res.status(400).send({
+        message: "no token given"
+    })
+  }
+  if(!req.body.account){
+    return res.status(400).send({
+        message: "no data account given"
+    })
+  }
+  tokenMethod.tokenIsGood(req.body.pseudo, req.body.token)
+  .then(tokenResponse => {
+    Users.find({
+      pseudo: req.body.pseudo,
+      token: req.body.token
+    })
+    .then(response => {
+      if(!response) {
+        return res.status(404).send({
+            message: "the user is not found"
+        })
+      }
+      let password = response[0].password
+      if(req.body.account.oldpassword !== '' && req.body.account.newpassword !== '' && req.body.account.verifpassword !== ''){
+        if(req.body.account.newpassword === req.body.account.verifpassword){
+          crypto.compareHash(req.body.account.oldpassword, response[0].password, isMatch => {
+            if(isMatch){
+              crypto.genHash(req.body.account.newpassword)
+              .then(newpass => {
+                password = newpass.hash
+                console.log('new password hashed' +newpass.hash)
+                Users.findByIdAndUpdate(response[0]._id, {
+                  pseudo: req.body.account.pseudo,
+                  password: password,
+                  role: response[0].role,
+                  first_name: req.body.account.firstname,
+                  last_name: req.body.account.lastname,
+                  email: req.body.account.email
+                })
+                .then(data => {
+                  console.log('ok data => :' +data)
+                  res.send('The profile is updated')
+                })
+                .catch(err => {
+                  return res.status(500).send({
+                    message: 'an error occured'
+                  })
+                })
+              })
+              .catch(err => {
+                console.log('catch l127')
+                res.status(500).send({
+                  message: 'an error occured'
+                })
+              })
+            } else {
+              res.status(500).send({
+                message: 'the new password is not good.'
+              })
+            }
+          })
+        } else {
+          res.status(500).send({
+            message: 'the old password is bad'
+          })
+        }
+
+      } else {
+        Users.findByIdAndUpdate(response[0]._id, {
+          pseudo: req.body.account.pseudo,
+          password: password,
+          role: response[0].role,
+          first_name: req.body.account.firstname,
+          last_name: req.body.account.lastname,
+          email: req.body.account.email
+        })
+        .then(data => {
+          console.log('ok data => :' +data)
+          res.send('The profile is updated')
+        })
+        .catch(err => {
+          return res.status(500).send({
+            message: 'an error occured'
+          })
+        })
+      }
+    })
+    .catch(err => {
+      return res.status(500).send({
+        message: 'an error occured'
+      })
+    })
+  })
+  .catch(err => {
+    return res.status(500).send({
+      message: 'an error occured'
+    })
+  })
 }
 
 //check for user connection
