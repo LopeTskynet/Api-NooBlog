@@ -17,6 +17,9 @@ exports.checkTechnicalObject = (technicalSheet) => {
             technicalSheet.effects.physic.name.splice(0, 1)
             technicalSheet.effects.cognitif.name.splice(0, 1)
             technicalSheet.effects.indesirable.name.splice(0, 1)
+            technicalSheet.effects.physic.describe.splice(0, 1)
+            technicalSheet.effects.cognitif.describe.splice(0, 1)
+            technicalSheet.effects.indesirable.describe.splice(0, 1)
             technicalSheet.references.urlTab.splice(0, 1)
             if(checkTab(technicalSheet.effects.physic.name) && checkTab(technicalSheet.effects.cognitif.name) && checkTab(technicalSheet.effects.indesirable.name)){
               if(checkTab(technicalSheet.references.urlTab)){
