@@ -92,3 +92,37 @@ exports.findAll = (req, res) => {
     })
   })
 }
+
+exports.findInProgress = (req, res) => {
+  if(!req.body.pseudo){
+    return res.status(400).send({
+        message: "no pseudo given"
+    })
+  }
+  if(!req.body.token){
+    return res.status(400).send({
+        message: "no token given"
+    })
+  }
+  Token.tokenIsGood(req.body.pseudo, req.body.token)
+  .then(response => {
+    Article.find()
+    .then(data => {
+      let tabInProgress = []
+      data.forEach(item => {
+        if(item.isFinish === false) {
+          tabInProgress.push(item)
+        }
+      })
+      res.send(tabInProgress)
+    }).catch(err => {
+      res.status(500).send({
+          message: err.message || "an error occured."
+      })
+    })
+  }).catch(err => {
+    res.status(500).send({
+      message: err.message || "an error occured"
+    })
+  })
+}
