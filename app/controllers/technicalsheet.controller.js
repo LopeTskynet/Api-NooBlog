@@ -28,19 +28,23 @@ exports.create = (req, res) => {
         effects: {
           physic: {
             name: req.body.technicalsheet.effects.physic.name,
-            describe: req.body.technicalsheet.effects.physic.describe
+            describe: req.body.technicalsheet.effects.physic.describe,
+            counter: req.body.technicalsheet.effects.physic.counter
           },
           cognitif: {
             name: req.body.technicalsheet.effects.cognitif.name,
-            describe: req.body.technicalsheet.effects.cognitif.describe
+            describe: req.body.technicalsheet.effects.cognitif.describe,
+            counter: req.body.technicalsheet.effects.cognitif.counter
           },
           indesirable: {
             name: req.body.technicalsheet.effects.indesirable.name,
-            describe: req.body.technicalsheet.effects.indesirable.describe
+            describe: req.body.technicalsheet.effects.indesirable.describe,
+            counter: req.body.technicalsheet.effects.indesirable.counter
           }
         },
         references: {
-          urlTab: req.body.technicalsheet.references.urlTab
+          urlTab: req.body.technicalsheet.references.urlTab,
+          counter: req.body.technicalsheet.references.counter
         }
       })
       technicalSave.save()
@@ -61,8 +65,8 @@ exports.create = (req, res) => {
     }
   }
 }
-/**
- * 
+/** 
+ * Find all technical sheet and return it
  */
 exports.findAll = (req, res) => {
   Technicalsheet.find()

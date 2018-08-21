@@ -10,19 +10,23 @@ const TechnicalsheetSchema = mongoose.Schema({
     effects: {
       physic: {
         name: Array,
-        describe: Array
+        describe: Array,
+        counter: Number
       },
       cognitif: {
         name: Array,
-        describe: Array
+        describe: Array,
+        counter: Number
       },
       indesirable: {
         name: Array,
-        describe: Array
+        describe: Array,
+        counter: Number
       }
     },
     references: {
-      urlTab: Array
+      urlTab: Array,
+      counter: Number
     }
 })
 

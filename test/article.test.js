@@ -12,11 +12,22 @@ let stub
 chai.use(chaiHttp)
 
 describe('Article', () => {
+
+  /** make a stub for Token.tokenisgood for avoid problem with token during test
+  before() execute once before everything else */
+
   before(() =>{
     stub = sinon.stub(Token, 'tokenIsGood').callsFake(() => {
       return Promise.resolve(true)
   })
   })
+
+  /**
+   *  We empty the article database before each test to be sure we get the good results
+   *  beforeEach() execute before each test
+   * @param done is necessary when done is call the test end and go to the next test
+   */
+
   beforeEach((done) => {
     Article.remove({}, (err) => {
       done()
