@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt')
-const Promise = require("bluebird")
 
 /**
  * function genHash : Generate a hash of the password using bcrypt
@@ -8,19 +7,18 @@ const Promise = require("bluebird")
  * @return {String}
  */
 exports.genHash = (password) => {
-    return new Promise((resolve,reject) => {
-        bcrypt.hash(password,10,function(err,hash) {
-            if (err) {
-                reject(err);
-            }
-            else {
-                resolve({
-                    password:password,
-                    hash:hash
-                })
-            }
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, 10, function (err, hash) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve({
+          password: password,
+          hash: hash
         })
+      }
     })
+  })
 }
 
 /**
@@ -32,15 +30,15 @@ exports.genHash = (password) => {
  * @return {boolean}
  */
 exports.compareHash = (password, hash, success) => {
-    return new Promise((resolve,reject) => {
-        bcrypt.compare(password, hash, function(err, res){
-            if(res) {
-                console.log('match')
-                success(true)
-            } else {
-                console.log('dont match')
-                success(false)
-            }
-        })
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, hash, function (err, res) {
+      if (res) {
+        console.log('match' + res)
+        success(true)
+      } else {
+        console.log('dont match' + err)
+        success(false)
+      }
     })
+  })
 }
