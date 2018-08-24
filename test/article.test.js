@@ -12,14 +12,13 @@ let stub
 chai.use(chaiHttp)
 
 describe('Article', () => {
-
   /** make a stub for Token.tokenisgood for avoid problem with token during test
   before() execute once before everything else */
 
-  before(() =>{
+  before(() => {
     stub = sinon.stub(Token, 'tokenIsGood').callsFake(() => {
       return Promise.resolve(true)
-  })
+    })
   })
 
   /**
