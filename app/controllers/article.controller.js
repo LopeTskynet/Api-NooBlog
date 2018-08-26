@@ -1,9 +1,10 @@
 //models import
 const Article = require('../models/article.models')
 const User = require('./users.controller')
+const Users = require('../models/users.models')
 const Promise = require("bluebird")
 const Token = require('./token.method')
-
+const tokenMethod = require('./token.method')
 //methods
 /**
  * function create : Create a new article for save it in BDD
@@ -140,6 +141,71 @@ exports.findOne = (req, res) => {
   .catch(err => {
     return res.status(500).send({
       message: "an error occured"
+    })
+  })
+}
+
+exports.updateArticle = (req, res) => {
+  if(!req.body.pseudo){
+    throw new Error('pseudo is empty')
+  }
+  if(!req.body.token){
+    throw new Error('token is empty')
+  }
+  if(!req.body.title){
+    throw new Error('title is empty')
+  }
+  if(!req.body.tag){
+    throw new Error('tag is empty')
+  }
+  if(!req.body.article){
+    throw new Error('article is empty')
+  }
+  if(!req.body.isFinish){
+    throw new Error('isFinish is empty')
+  }
+  if(!req.body.id){
+    throw new Error('id is empty')
+  }
+  tokenMethod.tokenIsGood(req.body.pseudo, req.body.token)
+  .then(response => {
+    if (!response) {
+      throw new Error('token is not good')
+    }
+    return Users.find({
+      pseudo: req.body.pseudo,
+      token: req.body.token
+    })
+  })
+  .then(response => {
+    if (!response) {
+      throw new Error('the user is not found')
+    }
+    return Article.findById(req.body.id)
+  })
+  .then(response => {
+    console.log(response)
+    if (!response) {
+      throw new Error('the article is not found')
+    }
+    let date = new Date().toLocaleDateString()
+    return Article.findByIdAndUpdate(req.body.id, {
+      article: req.body.article,
+      title: req.body.title,
+      tag: req.body.tag,
+      date: date,
+      isFinish: req.body.isFinish
+    })
+  })
+  .then(response => {
+    if (!response) {
+      throw new Error ('an problem occured during the update')
+    }
+    res.send('the article is update')
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: 'an error occured :' + err
     })
   })
 }

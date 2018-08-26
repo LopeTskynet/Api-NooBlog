@@ -5,4 +5,5 @@ module.exports = (app) => {
   app.post('/api/v1/article/all', article.findAll)
   app.post('/api/v1/article/inprogress', article.findInProgress)
   app.get('/api/v1/article/:articleId', article.findOne)
+  app.post('/api/v1/article/modification', article.updateArticle)
 }
