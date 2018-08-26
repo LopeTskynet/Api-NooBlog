@@ -209,3 +209,30 @@ exports.updateArticle = (req, res) => {
     })
   })
 }
+
+exports.delete  = (req, res) => {
+  if (!req.body.pseudo) {
+    throw new Error('pseudo is empty')
+  }
+  if (!req.body.token) {
+    throw new Error('token is empty')
+  }
+  if (!req.body.id) {
+    throw new Error('id is empty')
+  }
+  tokenMethod.tokenIsGood(req.body.pseudo, req.body.token)
+  .then(response => {
+    return Article.findByIdAndRemove(req.body.id)
+  })
+  .then(response => {
+    if (!response) {
+      throw new Error ('Article not found')
+    }
+    res.send({message: "Users delete"})
+  })
+  .catch(err => {
+    return res.status(500).send({
+        message: 'an error occured'  + err
+    })
+  })
+}
