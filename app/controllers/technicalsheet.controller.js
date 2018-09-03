@@ -1,11 +1,10 @@
-//models import
-//const Article = require('../models/article.models')
-const User = require('./users.controller')
-const Promise = require("bluebird")
-const Token = require('./token.method')
+// models import
+// const Article = require('../models/article.models')
 const TechnicalMethod = require('./technicalsheet.method')
 const Technicalsheet = require('../models/technicalsheet.models')
-//methods
+var isFinish
+
+// methods
 /**
  * function create : Create a new technicalsheet in bdd
  *
@@ -13,10 +12,10 @@ const Technicalsheet = require('../models/technicalsheet.models')
  * @return {void}
  */
 exports.create = (req, res) => {
-  if(req.body.technicalsheet != null){
-    if(TechnicalMethod.checkTechnicalObject(req.body.technicalsheet)){
+  if (req.body.technicalsheet != null) {
+    if (TechnicalMethod.checkTechnicalObject(req.body.technicalsheet)) {
       isFinish = false
-      if(req.body.technicalsheet.isFinish == 'true'){
+      if (req.body.technicalsheet.isFinish === 'true') {
         isFinish = true
       }
       const technicalSave = new Technicalsheet({
@@ -24,7 +23,7 @@ exports.create = (req, res) => {
         pharmacologie: req.body.technicalsheet.pharmacologie,
         chimie: req.body.technicalsheet.chimie,
         toxicity: req.body.technicalsheet.toxicity,
-        isFinish : isFinish,
+        isFinish: isFinish,
         effects: {
           physic: {
             name: req.body.technicalsheet.effects.physic.name,
@@ -48,33 +47,33 @@ exports.create = (req, res) => {
         }
       })
       technicalSave.save()
-      .then(response => {
-        res.send(response)
-      })
-      .catch( err => {
-        console.log(err)
-        res.status(500).send({
-            message: err.message ||"an error occured."
+        .then(response => {
+          res.send(response)
         })
-      })
+        .catch(err => {
+          console.log(err)
+          res.status(500).send({
+            message: err.message || 'an error occured.'
+          })
+        })
     } else {
       console.log('ERROR, TECHNICALSHEET IS NOT GOOD')
       res.status(500).send({
-        message: "Technicalsheet is empty"
+        message: 'Technicalsheet is empty'
       })
     }
   }
 }
-/** 
+/**
  * Find all technical sheet and return it
  */
 exports.findAll = (req, res) => {
   Technicalsheet.find()
-  .then(response => {
-    res.send(response)
-  }).catch(err => {
-    res.status(500).send({
-      message: err.message ||"an error has occured."
+    .then(response => {
+      res.send(response)
+    }).catch(err => {
+      res.status(500).send({
+        message: err.message || 'an error has occured.'
+      })
     })
-  })
 }
