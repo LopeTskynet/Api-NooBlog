@@ -7,7 +7,6 @@ mongoose.Promise = Promise
 
 var cors = require('cors')
 
-const logger = require('./app/logs')
 // Config files
 const dbConfig = require('./config/database.conf')
 const config = require('./config/server.conf')
@@ -24,7 +23,7 @@ app.use(bodyParser.json())
 // use cors for allow access on requests
 app.use(cors())
 // router
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
   res.json({'Message': 'Welcome on the NooBlog API'})
 })
 
@@ -40,7 +39,7 @@ mongoose.connect(dbConfig.url)
   .then(() => {
     console.log('Connected to the database')
   }).catch(err => {
-    console.log('Cannot connect to the database. Exiting now...')
+    console.log('Cannot connect to the database. Exiting now...' + err)
     process.exit()
   })
 

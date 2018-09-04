@@ -1,7 +1,6 @@
 const njwt = require('njwt')
 const secureRandom = require('secure-random')
 const userModele = require('../models/users.models')
-const users = require('../controllers/users.controller.js')
 const signingKey = secureRandom(256, {type: 'Buffer'})
 
 const claims = {
@@ -34,7 +33,6 @@ exports.genToken = (id) => {
         message: 'an error occured'
     })
   })
-
 }
 
 /**

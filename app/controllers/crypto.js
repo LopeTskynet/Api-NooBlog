@@ -19,7 +19,7 @@ exports.genHash = (password) => {
         })
       }
     })
-})
+  })
 }
 
 /**
@@ -33,13 +33,13 @@ exports.genHash = (password) => {
 exports.compareHash = (password, hash, success) => {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hash, (err, res) => {
-    if(res) {
-      console.log('match')
-      success(true)
-  } else {
-      console.log('dont match')
-      success(false)
-    }
+      if (res) {
+        console.log('match')
+        success(true)
+      } else {
+        console.log('dont match')
+        success(false)
+      }
     })
   })
 }
