@@ -75,7 +75,7 @@ exports.findOne = (req, res) => {
       res.send(users)
     }).catch(err => {
       return res.status(500).send({
-        message: 'an error occured'
+        message: 'an error occured ' + err
       })
     })
 }
@@ -132,14 +132,14 @@ exports.update = (req, res) => {
                         })
                         .catch(err => {
                           return res.status(500).send({
-                            message: 'an error occured'
+                            message: 'an error occured ' + err
                           })
                         })
                     })
                     .catch(err => {
                       console.log('catch l127')
                       res.status(500).send({
-                        message: 'an error occured'
+                        message: 'an error occured ' + err
                       })
                     })
                 } else {
@@ -168,20 +168,20 @@ exports.update = (req, res) => {
               })
               .catch(err => {
                 return res.status(500).send({
-                  message: 'an error occured'
+                  message: 'an error occured ' + err
                 })
               })
           }
         })
         .catch(err => {
           return res.status(500).send({
-            message: 'an error occured'
+            message: 'an error occured ' + err
           })
         })
     })
     .catch(err => {
       return res.status(500).send({
-        message: 'an error occured'
+        message: 'an error occured ' + err
       })
     })
 }
@@ -274,7 +274,6 @@ exports.tokenVerify = (req, res) => {
       console.error(err)
     })
   console.log('testing tokenVerify #######################################')
-
 }
 
 // Delete an user

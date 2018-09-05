@@ -137,7 +137,7 @@ exports.findOne = (req, res) => {
     })
     .catch(err => {
       return res.status(500).send({
-        message: 'an error occured'
+        message: 'an error occured ' + err
       })
     })
 }
