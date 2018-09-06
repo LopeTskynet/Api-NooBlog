@@ -1,2 +1,4 @@
 node_modules/
 script/
+coverage/
+.nyc_output/
