@@ -86,7 +86,16 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
   Article.find()
   .then(response => {
-    res.send(response)
+    if (!response) {
+      throw new Error('no article found')
+    }
+    let tabArticle = []
+    response.forEach(item => {
+      if (item.isFinish === true) {
+        tabArticle.push(item)
+      }
+    })
+    res.send(tabArticle)
   }).catch(err => {
     res.status(500).send({
         message: err.message || "an error occured."

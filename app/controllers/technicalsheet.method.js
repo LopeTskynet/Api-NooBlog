@@ -58,7 +58,6 @@ checkTab = (tab) => {
   bool = true
   tab.forEach( item => {
     item ? 'ok tab in order' : bool = false
-    console.log('\n \nthis item : \n' + item  + '\n this bool : \n'  + bool)
   })
   return bool
 }
