@@ -27,7 +27,8 @@ const TechnicalsheetSchema = mongoose.Schema({
   references: {
     urlTab: Array,
     counter: Number
-  }
+  },
+  date: Date
 })
 
 module.exports = mongoose.model('Technicalsheet', TechnicalsheetSchema)

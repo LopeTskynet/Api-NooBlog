@@ -20,6 +20,7 @@ exports.create = (req, res) => {
       if(req.body.technicalsheet.isFinish == 'true'){
         isFinish = true
       }
+      let dateNow = new Date().toLocaleDateString()
       const technicalSave = new Technicalsheet({
         name: req.body.technicalsheet.name,
         pharmacologie: req.body.technicalsheet.pharmacologie,
@@ -46,7 +47,8 @@ exports.create = (req, res) => {
         references: {
           urlTab: req.body.technicalsheet.references.urlTab,
           counter: req.body.technicalsheet.references.counter
-        }
+        },
+        date: dateNow
       })
       technicalSave.save()
       .then(response => {
@@ -69,10 +71,18 @@ exports.create = (req, res) => {
 /**
  * Find all technical sheet and return it
  */
-exports.findAll = (req, res) => {
+exports.findAllFinish = (req, res) => {
   Technicalsheet.find()
   .then(response => {
-    res.send(response)
+    if (!response) throw new Error ('No technicalsheet found')
+    let tabTechnicalsheet = []
+    response.forEach( item => {
+      if (item.isFinish === true) {
+        console.log(item.isFinish)
+        tabTechnicalsheet.push(item)
+      }
+    })
+    res.send(tabTechnicalsheet)
   }).catch(err => {
     res.status(500).send({
       message: err.message ||"an error has occured."
